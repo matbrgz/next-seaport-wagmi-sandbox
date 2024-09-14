@@ -1,24 +1,25 @@
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
 import * as React from "react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query' 
 import { WagmiConfig } from "wagmi";
-import { appName, chains, client } from "../wagmi";
+import { appName, config } from "../wagmi";
 import { SeaportContextProvider } from "../context/SeaportContext";
 import { StorageContextProvider } from "../context/StorageContext";
 
 import "../styles/styles.css";
-import "@rainbow-me/rainbowkit/styles.css";
+
+const queryClient = new QueryClient() 
 
 function App({ Component, pageProps }: AppProps) {
 	return (
-		<WagmiConfig client={client}>
-			<RainbowKitProvider appInfo={{ appName }} chains={chains}>
+		<WagmiConfig client={config}>
+			<QueryClientProvider client={queryClient}> 
 				<SeaportContextProvider>
 					<StorageContextProvider>
 						<Component {...pageProps} />
 					</StorageContextProvider>
 				</SeaportContextProvider>
-			</RainbowKitProvider>
+				</QueryClientProvider> 
 		</WagmiConfig>
 	);
 }
